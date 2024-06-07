@@ -1,4 +1,9 @@
 FROM eclipse-temurin:17-jdk-alpine AS build
+
+# Install Maven
+RUN apk --no-cache add maven
+
+# Copy the Maven project files and build the application
 COPY . .
 RUN mvn clean package -DskipTests
 
