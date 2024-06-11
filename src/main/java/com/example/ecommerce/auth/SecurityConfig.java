@@ -45,9 +45,9 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeRequests()
                 .requestMatchers("/rest/auth/**").permitAll()
-                .requestMatchers("/rest/user/*").permitAll()
-                .requestMatchers("/rest/products/*").permitAll()
-                .requestMatchers("/rest/categories/*").permitAll()
+                .requestMatchers("/rest/user/**").permitAll()
+                .requestMatchers("/rest/products/**").permitAll()
+                .requestMatchers("/rest/categories/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
