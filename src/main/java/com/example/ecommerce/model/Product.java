@@ -19,6 +19,12 @@ public class Product {
     private String description;
     private double price;
     private int stock;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] image1;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] image2;
     @OneToOne
     private Category category;
 }
