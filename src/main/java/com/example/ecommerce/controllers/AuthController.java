@@ -5,6 +5,8 @@ import com.example.ecommerce.model.User;
 import com.example.ecommerce.model.request.LoginReq;
 import com.example.ecommerce.model.response.ErrorRes;
 import com.example.ecommerce.model.response.LoginRes;
+import com.example.ecommerce.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/rest/auth")
 public class AuthController {
+    @Autowired
+    UserService userService;
     private final AuthenticationManager authenticationManager;
 
 
@@ -35,10 +39,13 @@ public class AuthController {
             Authentication authentication =
                     authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword()));
             String email = authentication.getName();
-            User user = new User();
-            user.setEmail(email);
+            User user = userService.findUserByEmail(email).get();
             String token = jwtUtil.createToken(user);
-            LoginRes loginRes = new LoginRes(email,token);
+            LoginRes loginRes = new LoginRes();
+            loginRes.setEmail(email);
+            loginRes.setToken(token);
+            loginRes.setFirstName(user.getFirstName());
+            loginRes.setLastName(user.getLastName());
 
             return ResponseEntity.ok(loginRes);
 
