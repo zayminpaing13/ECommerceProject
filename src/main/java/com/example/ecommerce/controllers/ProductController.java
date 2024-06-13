@@ -5,6 +5,7 @@ import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.request.ProductReq;
 import com.example.ecommerce.services.CategoryService;
 import com.example.ecommerce.services.ProductService;
+import com.example.ecommerce.services.S3Service;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,10 @@ import java.util.Optional;
 @JsonIgnoreProperties
 @RequestMapping("/rest/products")
 public class ProductController {
+
+    @Autowired
+    S3Service s3Service;
+
     @Autowired
     ProductService productService;
 
@@ -64,10 +69,12 @@ public class ProductController {
 
         try {
             if (!image1.isEmpty()) {
-                product.setImage1(image1.getBytes());
+                String url = s3Service.uploadFile(image1);
+                product.setImage1(url);
             }
             if (!image2.isEmpty()) {
-                product.setImage2(image2.getBytes());
+                String url = s3Service.uploadFile(image2);
+                product.setImage2(url);
             }
         } catch (IOException e) {
             e.printStackTrace();
