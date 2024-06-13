@@ -2,7 +2,9 @@ package com.example.ecommerce.controllers;
 
 import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.dto.ProductUpdate;
 import com.example.ecommerce.model.request.ProductReq;
+import com.example.ecommerce.repositories.ProductRepository;
 import com.example.ecommerce.services.CategoryService;
 import com.example.ecommerce.services.ProductService;
 import com.example.ecommerce.services.S3Service;
@@ -26,6 +28,9 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    ProductRepository productRepository;
 
     @Autowired
     CategoryService categoryService;
@@ -96,17 +101,48 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductReq productReq) {
-        Category category = categoryService.getCategoryById(productReq.getCategoryId()).get();
-        Product product = new Product();
-        product.setCategory(category);
-        product.setStock(productReq.getStock());
-        product.setPrice(productReq.getPrice());
-        product.setName(productReq.getName());
-        product.setDescription(productReq.getDescription());
-        Optional<Product> updateProduct = productService.updateProduct(id, product);
-        return updateProduct.map(ResponseEntity::ok)
+    @PatchMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @ModelAttribute ProductUpdate productUpdate) {
+        Optional<Product> opt_product = productService.getProductById(id);
+        if(opt_product.isPresent()){
+            Product product = opt_product.get();
+            if(productUpdate.getName()!=null){
+                product.setName(productUpdate.getName());
+            }
+            if(productUpdate.getDescription()!=null){
+                product.setDescription(productUpdate.getDescription());
+            }
+            if(productUpdate.getPrice()!=null){
+                product.setPrice(productUpdate.getPrice());
+            }
+            if(productUpdate.getStock()!=null){
+                product.setStock(productUpdate.getStock());
+            }
+            if(productUpdate.getImage1()!=null){
+                String url = null;
+                try {
+                    url = s3Service.uploadFile(productUpdate.getImage1());
+                    product.setImage1(url);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(productUpdate.getImage2()!=null){
+                String url = null;
+                try {
+                    url = s3Service.uploadFile(productUpdate.getImage2());
+                    product.setImage2(url);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(productUpdate.getCategoryId()!=null){
+                Category category = categoryService.getCategoryById(productUpdate.getCategoryId()).get();
+                product.setCategory(category);
+            }
+            productRepository.save(product);
+        }
+        return opt_product.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

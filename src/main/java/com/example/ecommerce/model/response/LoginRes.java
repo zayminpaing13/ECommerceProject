@@ -14,6 +14,7 @@ public class LoginRes {
     private String token;
     private String firstName;
     private String lastName;
+    private String role;
 
     public LoginRes(String email, String token) {
         this.email = email;

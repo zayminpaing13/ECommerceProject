@@ -46,6 +46,7 @@ public class AuthController {
             loginRes.setToken(token);
             loginRes.setFirstName(user.getFirstName());
             loginRes.setLastName(user.getLastName());
+            loginRes.setRole(user.getRole());
 
             return ResponseEntity.ok(loginRes);
 
