@@ -34,10 +34,17 @@ public class CategoryController {
         return categoryService.createCategory(category);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
-        Optional<Category> updatedCategory = categoryService.updateCategory(id, categoryDetails);
-        return updatedCategory.map(ResponseEntity::ok)
+        Optional<Category> opt_category = categoryService.getCategoryById(id);
+        Category category = opt_category.get();
+        if(categoryDetails.getName()!=null){
+            category.setName(categoryDetails.getName());
+        }
+        if(categoryDetails.getDescription()!=null){
+            category.setDescription(categoryDetails.getDescription());
+        }
+        return opt_category.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

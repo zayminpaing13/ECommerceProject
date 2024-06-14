@@ -1,6 +1,7 @@
 package com.example.ecommerce.controllers;
 
 import com.example.ecommerce.model.User;
+import com.example.ecommerce.model.dto.UserUpdate;
 import com.example.ecommerce.repositories.UserRepository;
 import com.example.ecommerce.services.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -40,14 +41,24 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user){
+    @PatchMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody UserUpdate userUpdate){
         User updated_user = userService.getUserById(id);
-        updated_user.setEmail(user.getEmail());
-        updated_user.setPassword(user.getPassword());
-        updated_user.setRole(user.getRole());
-        updated_user.setRole(user.getFirstName());
-        updated_user.setLastName(user.getLastName());
+        if(userUpdate.getEmail()!=null){
+            updated_user.setEmail(userUpdate.getEmail());
+        }
+        if(userUpdate.getPassword()!=null){
+            updated_user.setPassword(userUpdate.getPassword());
+        }
+        if(userUpdate.getRole()!=null){
+            updated_user.setRole(userUpdate.getRole());
+        }
+        if(userUpdate.getFirstName()!=null){
+            updated_user.setFirstName(userUpdate.getFirstName());
+        }
+        if(userUpdate.getLastName()!=null){
+            updated_user.setLastName(userUpdate.getLastName());
+        }
         userRepository.save(updated_user);
         return updated_user;
     }
