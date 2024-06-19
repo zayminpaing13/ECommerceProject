@@ -14,11 +14,11 @@ public class ECommerceApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("*")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                registry.addMapping("/**").allowedOrigins("*");
+                registry.addMapping("/**").allowedMethods("*");
+                registry.addMapping("/**").allowedHeaders("*");
+                registry.addMapping("/**").allowCredentials(true);
+                registry.addMapping("/**").allowPrivateNetwork(true);
             }
         };
     }
