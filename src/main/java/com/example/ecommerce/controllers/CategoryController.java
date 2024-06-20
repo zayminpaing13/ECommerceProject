@@ -1,6 +1,7 @@
 package com.example.ecommerce.controllers;
 
 import com.example.ecommerce.model.Category;
+import com.example.ecommerce.repositories.CategoryRepository;
 import com.example.ecommerce.services.CategoryService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.util.Optional;
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @GetMapping
     public List<Category> getAllCategories() {
@@ -44,6 +48,7 @@ public class CategoryController {
         if(categoryDetails.getDescription()!=null){
             category.setDescription(categoryDetails.getDescription());
         }
+        categoryRepository.save(category);
         return opt_category.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
