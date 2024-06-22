@@ -44,6 +44,7 @@ public class AuthController {
             LoginRes loginRes = new LoginRes();
             loginRes.setEmail(email);
             loginRes.setToken(token);
+            loginRes.setId(user.getId());
             loginRes.setFirstName(user.getFirstName());
             loginRes.setLastName(user.getLastName());
             loginRes.setRole(user.getRole());

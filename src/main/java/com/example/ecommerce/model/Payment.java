@@ -19,6 +19,4 @@ public class Payment {
     private String expDate;
     private String securityCode;
     private String nameOnCard;
-//    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
-//    private Transaction transaction;
 }

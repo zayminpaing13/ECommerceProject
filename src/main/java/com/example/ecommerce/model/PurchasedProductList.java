@@ -15,8 +15,6 @@ public class PurchasedProductList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    @ManyToOne
-//    private Transaction transaction;
     @ManyToOne
     private Product product;
     private int qty;

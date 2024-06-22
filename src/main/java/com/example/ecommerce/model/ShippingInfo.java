@@ -23,6 +23,4 @@ public class ShippingInfo {
     private String city;
     private String postalCode;
     private String phoneNumber;
-//    @OneToOne(mappedBy = "shippingInfo", cascade = CascadeType.ALL)
-//    private Transaction transaction;
 }
