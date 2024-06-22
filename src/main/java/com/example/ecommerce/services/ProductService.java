@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ProductService {
     public Product createProduct(Product product);
-    public Page<Product> getAllProducts(PageRequest pageRequest);
+    public List<Product> getAllProducts();
     public Optional<Product> getProductById(long id);
     public List<Product> getProductsByCategory(long categoryId);
     public Optional<Product> updateProduct(long id, Product product);
