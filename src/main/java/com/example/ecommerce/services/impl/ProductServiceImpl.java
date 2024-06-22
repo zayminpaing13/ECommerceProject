@@ -7,6 +7,8 @@ import com.example.ecommerce.repositories.ProductRepository;
 import com.example.ecommerce.services.CategoryService;
 import com.example.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Page<Product> getAllProducts(PageRequest pageRequest) {
+        return productRepository.findAll(pageRequest);
     }
 
     @Override
