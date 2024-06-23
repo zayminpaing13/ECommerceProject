@@ -48,8 +48,9 @@ public class TransactionController {
         transaction.setUser(user);
         transaction.setShippingInfo(transactionReq.getShippingInfo());
         List<PurchasedProductList> purchasedProductLists = new ArrayList<>();
-        PurchasedProductList purchasedProductList = new PurchasedProductList();
+        PurchasedProductList purchasedProductList;
         for(PurchasedProductListReq purchasedProductListReq:transactionReq.getPurchasedProductListReqs()){
+            purchasedProductList = new PurchasedProductList();
             Product product = productService.getProductById(purchasedProductListReq.getProductId()).get();
             purchasedProductList.setProduct(product);
             purchasedProductList.setQty(purchasedProductListReq.getQty());
